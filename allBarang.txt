@@ -1,0 +1,11 @@
+1001,Sampo,12
+1002,Odol,15
+1003,Shampoo,20
+1004,Soap,25
+1005,Toothbrush,30
+1006,Towel,35
+1007,Comb,40
+1008,Shaving Cream,45
+1009,Deodorant,50
+1010,Perfume,55
+1011,Lotion,58
