@@ -1,6 +1,6 @@
 import java.util.*;
 
-class CustomerDriver extends Driver {
+public class CustomerDriver extends Driver {
     ArrayList<Barang> cart;
     ArrayList<Barang> listBarang;
     ArrayList<Transaksi> listTransaksi;
@@ -19,6 +19,7 @@ class CustomerDriver extends Driver {
     }
 
     public void addBarangToCart(String barangId, int quantity) {
+        viewBarang();
         Barang barangToAdd = null;
         for (Barang barang : listBarang) {
             if (barang.id.equals(barangId) && barang.quantity >= quantity) {
@@ -37,9 +38,9 @@ class CustomerDriver extends Driver {
     public void checkout() {
         String transaksiId = "T" + (listTransaksi.size() + 1);
         Transaksi transaksi = new Transaksi(transaksiId, (Customer) this.akun, new ArrayList<>(this.cart));
-        listTransaksi.add(transaksi); // Add to the pending transactions list
+        listTransaksi.add(transaksi);
         System.out.println("Checkout completed. Transaksi ID: " + transaksiId);
-        cart.clear(); // Clear the cart after checkout
+        cart.clear();
     }
 
     public void viewHistory() {
