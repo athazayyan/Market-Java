@@ -1,0 +1,10 @@
+1002,Sampo,12
+1003,Odol,15
+1004,Shampoo,20
+1005,Soap,25
+1006,Toothbrush,30
+1007,Conditioner,18
+1008,Handwash,22
+1009,Toothpaste,17
+1010,Bodywash,28
+1011,Facewash,19
