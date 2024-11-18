@@ -1,4 +1,4 @@
-class Barang {
+public class Barang {
     String id;
     String name;
     int quantity;
