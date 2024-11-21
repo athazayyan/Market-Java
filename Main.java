@@ -1,6 +1,8 @@
 import java.io.*;
 import java.util.*;
 
+
+
 public class Main {
     HashMap<String, String> userDatabase = new HashMap<>();
     ArrayList<Barang> listBarang = new ArrayList<>();
@@ -169,11 +171,7 @@ public class Main {
     }
 
     private void saveLoginDetails(String id) {
-        try (FileWriter writer = new FileWriter("loginDetails.txt")) {
-            writer.write(id);
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
-        }
+        // Save login details if necessary
     }
 
     public static void main(String[] args) {

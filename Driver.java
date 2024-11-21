@@ -1,4 +1,3 @@
-public abstract class Driver {
+abstract class Driver {
     Akun akun;
-
 }

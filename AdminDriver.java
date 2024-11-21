@@ -3,7 +3,6 @@ import java.util.*;
 
 
 public class AdminDriver extends Driver {
-    Akun akun;
     ArrayList<Barang> listBarang;
     ArrayList<Transaksi> listTransaksi;
 

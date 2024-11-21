@@ -1,5 +1,6 @@
 import java.util.*;
 
+
 public class Transaksi {
     String id;
     Customer akun;
