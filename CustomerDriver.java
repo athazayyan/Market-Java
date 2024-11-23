@@ -13,6 +13,7 @@ public class CustomerDriver extends Driver {
         this.listTransaksi = listTransaksi;
     }
 
+    @Override
     public void viewBarang() {
         for (Barang barang : listBarang) {
             System.out.println("ID: " + barang.id + ", Name: " + barang.name + ", Quantity: " + barang.quantity);

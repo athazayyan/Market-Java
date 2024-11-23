@@ -1,7 +1,6 @@
 import java.util.*;
 
-
-public class Transaksi {
+class Transaksi {
     String id;
     Customer akun;
     ArrayList<Barang> barang;

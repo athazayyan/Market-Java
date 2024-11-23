@@ -77,4 +77,10 @@ public class AdminDriver extends Driver {
             e.printStackTrace();
         }
     }
+    @Override
+    public void viewBarang() {
+        for (Barang barang : listBarang) {
+            System.out.println("ID: " + barang.id + ", Name: " + barang.name + ", Quantity: " + barang.quantity);
+        }
+    }
 }
