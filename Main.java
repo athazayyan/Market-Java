@@ -127,7 +127,8 @@ public class Main {
             System.out.println("3. Delete Barang");
             System.out.println("4. View Transaksi");
             System.out.println("5. Accept Transaksi");
-            System.out.println("6. Logout");
+            System.out.println("6. Lihat Ketersediaan Stok");
+            System.out.println("7. Logout");
             System.out.print("Choose an option: ");
             int choice = scanner.nextInt();
             scanner.nextLine();
@@ -177,7 +178,10 @@ public class Main {
                     adminDriver.acceptTransaksi(transIndex);
                     break;
                 case 6:
-                    return; // Keluar dari menu admin
+                    adminDriver.viewBarang();
+                    break;
+                case 7:
+                 return; // Keluar dari menu admin
                 default:
                     System.out.println("Invalid option"); // Menampilkan pesan jika opsi tidak valid
                     break;
@@ -198,10 +202,9 @@ public class Main {
             System.out.print("Choose an option: ");
             int choice = scanner.nextInt();
             scanner.nextLine();
-
+    
             switch (choice) {
                 case 1:
-                    // Menampilkan daftar barang menggunakan metode dari CustomerDriver
                     customerDriver.viewBarang();
                     break;
                 case 2:
@@ -210,25 +213,24 @@ public class Main {
                     System.out.print("Enter quantity: ");
                     int quantity = scanner.nextInt();
                     scanner.nextLine();
-                    // Menambahkan barang ke keranjang menggunakan metode dari CustomerDriver
                     customerDriver.addBarangToCart(barangId, quantity);
                     break;
                 case 3:
-                    // Menyelesaikan proses checkout menggunakan metode dari CustomerDriver
+                    // Perform checkout
                     customerDriver.checkout();
                     break;
                 case 4:
-                    // Menampilkan riwayat transaksi menggunakan metode dari CustomerDriver
                     customerDriver.viewHistory();
                     break;
                 case 5:
-                    return; // Keluar dari menu customer
+                    return; // Log out
                 default:
-                    System.out.println("Invalid option"); // Menampilkan pesan jika opsi tidak valid
+                    System.out.println("Invalid option");
                     break;
             }
         }
     }
+    
 
     // Metode untuk menyimpan detail login (jika diperlukan)
     private void saveLoginDetails(String id) {
