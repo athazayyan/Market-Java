@@ -19,7 +19,7 @@ public class CustomerDriver extends Driver {
     public void viewBarang() {
         // Menampilkan daftar barang yang ada
         listBarangObj.listBarang();
-    }
+    }   
 
     // Menambahkan barang ke dalam cart
     public void addBarangToCart(String barangId, int quantity) {
