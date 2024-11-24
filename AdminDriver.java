@@ -5,6 +5,8 @@ import java.util.*;
 public class AdminDriver extends Driver {
     ArrayList<Barang> listBarang;
     ArrayList<Transaksi> listTransaksi;
+    ListBarang listBarangObj = new ListBarang();
+
 
     AdminDriver(Akun akun, ArrayList<Barang> listBarang, ArrayList<Transaksi> listTransaksi) {
         this.akun = akun;
@@ -66,6 +68,11 @@ public class AdminDriver extends Driver {
         }
         saveAllBarangToFile(); 
     }
+    @Override
+    public void viewBarang() {
+        listBarangObj.listBarang();
+    }
+
 
     private void saveAllBarangToFile() {
         try (FileWriter writer = new FileWriter("allBarang.txt")) {
@@ -77,10 +84,6 @@ public class AdminDriver extends Driver {
             e.printStackTrace();
         }
     }
-    @Override
-    public void viewBarang() {
-        for (Barang barang : listBarang) {
-            System.out.println("ID: " + barang.id + ", Name: " + barang.name + ", Quantity: " + barang.quantity);
-        }
-    }
+
 }
+    
