@@ -5,6 +5,7 @@ public class CustomerDriver extends Driver {
     ArrayList<Barang> cart;
     ArrayList<Barang> listBarang;
     ArrayList<Transaksi> listTransaksi;
+    ListBarang listBarangObj = new ListBarang();
 
     CustomerDriver(Customer akun, ArrayList<Barang> cart, ArrayList<Barang> listBarang, ArrayList<Transaksi> listTransaksi) {
         this.akun = akun;
@@ -15,9 +16,7 @@ public class CustomerDriver extends Driver {
 
     @Override
     public void viewBarang() {
-        for (Barang barang : listBarang) {
-            System.out.println("ID: " + barang.id + ", Name: " + barang.name + ", Quantity: " + barang.quantity);
-        }
+        listBarangObj.listBarang();
     }
 
     public void addBarangToCart(String barangId, int quantity) {
@@ -48,4 +47,5 @@ public class CustomerDriver extends Driver {
     public void viewHistory() {
         System.out.println("Viewing history for: " + this.akun.id);
     }
+    
 }
