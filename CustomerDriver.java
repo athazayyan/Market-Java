@@ -36,8 +36,9 @@ public class CustomerDriver extends Driver {
             cart.add(barangToAdd);
             
             // Menyimpan data barang ke file
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter("cart.txt", true))) {
-                writer.write(barangToAdd.id + "," + barangToAdd.name + "," + barangToAdd.quantity + "," + barangToAdd.price);
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter("cart" + akun.id + ".txt", true))) {
+                
+                writer.write((cart.size() + 1) + ","+barangToAdd.id + "," + barangToAdd.name + "," + barangToAdd.quantity + "," + barangToAdd.price);
                 writer.newLine();
             } catch (IOException e) {
                 System.out.println("Gagal menyimpan barang ke file: " + e.getMessage());
@@ -53,16 +54,18 @@ public class CustomerDriver extends Driver {
     public void checkout() {
         Pembayaran pembayaran = null;
         // Membaca barang dari file cart.txt
-        try (BufferedReader reader = new BufferedReader(new FileReader("cart.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("cart" + akun.id + ".txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] data = line.split(",");
-                String id = data[0];
-                String name = data[1];
-                int quantity = Integer.parseInt(data[2]);
-                double price = Double.parseDouble(data[3]);
+                int index = Integer.parseInt(data[0]);
+                String id = data[1];
+                String name = data[2];
+                int quantity = Integer.parseInt(data[3]);
+                double price = Double.parseDouble(data[4]);
     
                 // Memproses setiap barang dengan metode pembayaran
+                // Buat txt file untuk checkout setiapbarang yang sudah dibeli. tiap tiap customernya ex: checkoutC1.txt
                 Scanner scanner = new Scanner(System.in);
                 System.out.println("Pilih metode pembayaran:");
                 System.out.println("1. Bank");
@@ -75,15 +78,17 @@ public class CustomerDriver extends Driver {
                 switch (paymentChoice) {
                     case 1:
                         pembayaran = new Bank();
-                        pembayaran.setJumlahBayar(name, quantity, (int) price);
+                        pembayaran.setJumlahBayar(index, name, quantity, (int) price);
+            
                         break;
+
                     case 2:
                         pembayaran = new COD();
-                        pembayaran.setJumlahBayar(name, quantity, (int) price);
+                        pembayaran.setJumlahBayar(index, name, quantity, (int) price);
                         break;
                     case 3:
                         pembayaran = new QRIS();
-                        pembayaran.setJumlahBayar(name, quantity, (int) price);
+                        pembayaran.setJumlahBayar(index, name, quantity, (int) price);
                         break;
                     default:
                         System.out.println("Pilihan metode pembayaran tidak valid. Checkout dibatalkan.");
@@ -110,7 +115,7 @@ public class CustomerDriver extends Driver {
     
         // Mengosongkan keranjang dan file setelah checkout selesai
         cart.clear();
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("cart.txt"))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("cart" + akun.id + ".txt"))) {
             writer.write(""); // Mengosongkan isi file
         } catch (IOException e) {
             System.out.println("Gagal mengosongkan file keranjang: " + e.getMessage());
@@ -140,12 +145,15 @@ public class CustomerDriver extends Driver {
             System.out.println("5. Logout");
             System.out.print("Pilih opsi: ");
             int choice = scanner.nextInt();
-            scanner.nextLine();
+            if (!scanner.hasNextLine()) {
+                break; // Menghindari NoSuchElementException jika tidak ada input
+            }
 
             switch (choice) {
                 case 1 -> viewBarang();
                 case 2 -> {
                     viewBarang();
+                    scanner.nextLine();
                     System.out.print("Masukkan ID Barang untuk ditambahkan ke keranjang: ");
                     String barangId = scanner.nextLine();
                     System.out.print("Masukkan kuantitas: ");
