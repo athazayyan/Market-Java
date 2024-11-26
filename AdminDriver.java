@@ -1,12 +1,13 @@
-import java.io.*;
-import java.util.*;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 
 public class AdminDriver extends Driver {
     ArrayList<Barang> listBarang;
     ArrayList<Transaksi> listTransaksi;
     ListBarang listBarangObj = new ListBarang();
-
 
     AdminDriver(Akun akun, ArrayList<Barang> listBarang, ArrayList<Transaksi> listTransaksi) {
         this.akun = akun;
@@ -19,6 +20,7 @@ public class AdminDriver extends Driver {
         saveAllBarangToFile();
         System.out.println("Barang ditambah: " + barang.name);
     }
+
     public void editBarang(int index, Barang barang) {
         if (index >= 0 && index < listBarang.size()) {
             listBarang.set(index, barang);
@@ -68,22 +70,91 @@ public class AdminDriver extends Driver {
         }
         saveAllBarangToFile(); 
     }
+
     @Override
     public void viewBarang() {
         listBarangObj.listBarang();
     }
-
 
     private void saveAllBarangToFile() {
         try (FileWriter writer = new FileWriter("allBarang.txt")) {
             for (Barang barang : listBarang) {
                 writer.write(barang.id + "," + barang.name + "," + barang.quantity + "\n");
             }
-            System.out.println("semua barang disimpan ke allBarang.txt");
+            System.out.println("Semua barang disimpan ke allBarang.txt");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    // **Metode Admin Menu**
+    @Override
+    public void Menu() {
+        try (Scanner scanner = new Scanner(System.in)) {
+            while (true) {
+                System.out.println("Menu Admin:");
+                System.out.println("1. Tambah Barang");
+                System.out.println("2. Edit Barang");
+                System.out.println("3. Hapus Barang");
+                System.out.println("4. Lihat Transaksi");
+                System.out.println("5. Terima Transaksi");
+                System.out.println("6. Lihat Ketersediaan Stok");
+                System.out.println("7. Logout");
+                System.out.print("Pilih opsi: ");
+                int choice = scanner.nextInt();
+                scanner.nextLine();
+
+                switch (choice) {
+                    case 1 -> {
+                        System.out.print("Masukkan ID Barang: ");
+                        String id = scanner.nextLine();
+                        System.out.print("Masukkan nama Barang: ");
+                        String name = scanner.nextLine();
+                        System.out.print("Masukkan kuantitas Barang: ");
+                        int quantity = scanner.nextInt();
+                        scanner.nextLine();
+                        System.out.print("Masukkan harga Barang: ");
+                        int price = scanner.nextInt();
+                        scanner.nextLine();
+                        addBarang(new Barang(id, name, quantity, price)); // Tambah Barang
+                    }
+                    case 2 -> {
+                        System.out.print("Masukkan indeks untuk diedit: ");
+                        int editIndex = scanner.nextInt();
+                        scanner.nextLine();
+                        System.out.print("Masukkan ID Barang baru: ");
+                        String newId = scanner.nextLine();
+                        System.out.print("Masukkan nama Barang baru: ");
+                        String newName = scanner.nextLine();
+                        System.out.print("Masukkan kuantitas Barang baru: ");
+                        int newQuantity = scanner.nextInt();
+                        scanner.nextLine();
+                        System.out.print("Masukkan harga Barang baru: ");
+                        int newPrice = scanner.nextInt();
+                        scanner.nextLine();
+                        editBarang(editIndex, new Barang(newId, newName, newQuantity, newPrice)); // Edit Barang
+                    }
+                    case 3 -> {
+                        System.out.print("Masukkan indeks untuk dihapus: ");
+                        int deleteIndex = scanner.nextInt();
+                        scanner.nextLine();
+                        deleteBarang(deleteIndex); // Hapus Barang
+                    }
+                    case 4 -> viewTransaksi(); // Lihat Transaksi
+                    case 5 -> {
+                        System.out.print("Masukkan indeks transaksi untuk diterima: ");
+                        int transIndex = scanner.nextInt();
+                        scanner.nextLine();
+                        acceptTransaksi(transIndex); // Terima Transaksi
+                    }
+                    case 6 -> viewBarang(); // Lihat Barang
+                    case 7 -> {
+                        System.out.println("Keluar dari akun Admin...");
+                        return;
+                    }
+                    default -> System.out.println("Opsi tidak valid");
+                }
+            }
+        }
+    }
 }
-    
