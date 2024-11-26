@@ -8,6 +8,7 @@ public class AdminDriver extends Driver {
     ArrayList<Barang> listBarang;
     ArrayList<Transaksi> listTransaksi;
     ListBarang listBarangObj = new ListBarang();
+    
 
     AdminDriver(Akun akun, ArrayList<Barang> listBarang, ArrayList<Transaksi> listTransaksi) {
         this.akun = akun;
@@ -54,6 +55,8 @@ public class AdminDriver extends Driver {
             updateStockAfterTransaksiAcceptance(transaksi);
             listTransaksi.remove(index); 
             System.out.println("Transaksi diterima dengan id: " + transaksi.akun.id);
+            //Dia baca semua Checkout**.txt
+            //kita tambpilin semua file checkout.txt dengan hapus txt.
         } else {
             System.out.println("Invalid index");
         }
@@ -79,7 +82,7 @@ public class AdminDriver extends Driver {
     private void saveAllBarangToFile() {
         try (FileWriter writer = new FileWriter("allBarang.txt")) {
             for (Barang barang : listBarang) {
-                writer.write(barang.id + "," + barang.name + "," + barang.quantity + "\n");
+                writer.write(barang.id + "," + barang.name + "," + barang.quantity + "," + barang.price + "\n");
             }
             System.out.println("Semua barang disimpan ke allBarang.txt");
         } catch (IOException e) {
@@ -102,10 +105,12 @@ public class AdminDriver extends Driver {
                 System.out.println("7. Logout");
                 System.out.print("Pilih opsi: ");
                 int choice = scanner.nextInt();
-                scanner.nextLine();
+                if (!scanner.hasNextLine()) {
+                    break; // Menghindari NoSuchElementException jika tidak ada input
+                }
 
                 switch (choice) {
-                    case 1 -> {
+                    case 1:
                         System.out.print("Masukkan ID Barang: ");
                         String id = scanner.nextLine();
                         System.out.print("Masukkan nama Barang: ");
@@ -117,8 +122,8 @@ public class AdminDriver extends Driver {
                         int price = scanner.nextInt();
                         scanner.nextLine();
                         addBarang(new Barang(id, name, quantity, price)); // Tambah Barang
-                    }
-                    case 2 -> {
+                        break;
+                    case 2:
                         System.out.print("Masukkan indeks untuk diedit: ");
                         int editIndex = scanner.nextInt();
                         scanner.nextLine();
@@ -133,26 +138,31 @@ public class AdminDriver extends Driver {
                         int newPrice = scanner.nextInt();
                         scanner.nextLine();
                         editBarang(editIndex, new Barang(newId, newName, newQuantity, newPrice)); // Edit Barang
-                    }
-                    case 3 -> {
+                        break;
+                    case 3:
                         System.out.print("Masukkan indeks untuk dihapus: ");
                         int deleteIndex = scanner.nextInt();
                         scanner.nextLine();
                         deleteBarang(deleteIndex); // Hapus Barang
-                    }
-                    case 4 -> viewTransaksi(); // Lihat Transaksi
-                    case 5 -> {
+                        break;
+                    case 4:
+                        viewTransaksi(); // Lihat Transaksi
+                        break;
+                    case 5:
                         System.out.print("Masukkan indeks transaksi untuk diterima: ");
                         int transIndex = scanner.nextInt();
                         scanner.nextLine();
                         acceptTransaksi(transIndex); // Terima Transaksi
-                    }
-                    case 6 -> viewBarang(); // Lihat Barang
-                    case 7 -> {
+                        break;
+                    case 6:
+                        viewBarang(); // Lihat Barang
+                        break;
+                    case 7:
                         System.out.println("Keluar dari akun Admin...");
                         return;
-                    }
-                    default -> System.out.println("Opsi tidak valid");
+                    default:
+                        System.out.println("Opsi tidak valid");
+                        break;
                 }
             }
         }
