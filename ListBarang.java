@@ -24,7 +24,7 @@ public class ListBarang {
                 }
             }
         } catch (IOException e) {
-            System.err.println("Error reading the file: " + e.getMessage());
+            System.err.println("Error ketika baca file: " + e.getMessage());
         }
 
         System.out.println("+---------------------------------------------------------------------+");
