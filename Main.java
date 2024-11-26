@@ -59,7 +59,8 @@ public class Main {
                 Admin akun = new Admin(id);
                 AdminDriver adminDriver = new AdminDriver(akun, listBarang, listTransaksi);
                 System.out.println("Masuk sebagai Admin");
-                adminDriver.Menu(); // Memanggil menu admin dari AdminDriver
+                adminDriver.Menu();
+                return;
             } else {
                 System.out.println("Password Admin tidak valid.");
             }
@@ -135,8 +136,19 @@ public class Main {
             System.out.println("2. Masuk");
             System.out.println("3. Keluar");
             System.out.print("Pilih opsi: ");
-            int choice = scanner.nextInt();
-            scanner.nextLine();
+            if (!scanner.hasNextLine()) {
+                break; // Menghindari NoSuchElementException jika tidak ada input
+            }
+            int choice;
+            try {
+                choice = scanner.nextInt();
+                scanner.nextLine(); // Membersihkan newline dari buffer
+            } catch (InputMismatchException e) {
+                System.out.println("Input tidak valid. Masukkan angka.");
+                scanner.nextLine(); // Membersihkan input yang salah
+                continue;
+            }
+        
 
             switch (choice) {
                 case 1 -> main.register();
