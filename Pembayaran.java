@@ -3,6 +3,6 @@ abstract public class Pembayaran {
     String tanggal;
 
     abstract public void bayar();
-    abstract public void setJumlahBayar();
+    abstract public void setJumlahBayar(String nama, int jumlahBayar, int Kuantity);
     
 }
