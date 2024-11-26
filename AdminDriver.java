@@ -17,13 +17,13 @@ public class AdminDriver extends Driver {
     public void addBarang(Barang barang) {
         listBarang.add(barang);
         saveAllBarangToFile();
-        System.out.println("Barang added: " + barang.name);
+        System.out.println("Barang ditambah: " + barang.name);
     }
     public void editBarang(int index, Barang barang) {
         if (index >= 0 && index < listBarang.size()) {
             listBarang.set(index, barang);
             saveAllBarangToFile();
-            System.out.println("Barang edited: " + barang.name);
+            System.out.println("Barang diedit: " + barang.name);
         } else {
             System.out.println("Invalid index");
         }
@@ -33,7 +33,7 @@ public class AdminDriver extends Driver {
         if (index >= 0 && index < listBarang.size()) {
             Barang removed = listBarang.remove(index);
             saveAllBarangToFile();
-            System.out.println("Barang deleted: " + removed.name);
+            System.out.println("Barang dihapus: " + removed.name);
         } else {
             System.out.println("Invalid index");
         }
@@ -51,7 +51,7 @@ public class AdminDriver extends Driver {
             Transaksi transaksi = listTransaksi.get(index);
             updateStockAfterTransaksiAcceptance(transaksi);
             listTransaksi.remove(index); 
-            System.out.println("Transaksi accepted for: " + transaksi.akun.id);
+            System.out.println("Transaksi diterima dengan id: " + transaksi.akun.id);
         } else {
             System.out.println("Invalid index");
         }
@@ -79,10 +79,11 @@ public class AdminDriver extends Driver {
             for (Barang barang : listBarang) {
                 writer.write(barang.id + "," + barang.name + "," + barang.quantity + "\n");
             }
-            System.out.println("All barang saved to allBarang.txt");
+            System.out.println("semua barang disimpan ke allBarang.txt");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
 }
+    
