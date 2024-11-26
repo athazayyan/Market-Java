@@ -32,9 +32,9 @@ public class CustomerDriver extends Driver {
         }
         if (barangToAdd != null) {
             cart.add(barangToAdd);
-            System.out.println("Barang added to cart: " + barangToAdd.name);
+            System.out.println("Barang ditamabhkan ke keranjang: " + barangToAdd.name);
         } else {
-            System.out.println("Barang not available or insufficient quantity.");
+            System.out.println("Barang tidak ditemukan atau stok barang tidak cukup.");
         }
     }
 
@@ -93,7 +93,7 @@ public void checkout() {
 
     // Menampilkan riwayat transaksi
     public void viewHistory() {
-        System.out.println("Viewing history for: " + this.akun.id);
+        System.out.println("Melihat Riwayat: " + this.akun.id +" "+ this.akun.username );
         // Menampilkan riwayat transaksi
         for (Transaksi transaksi : listTransaksi) {
             System.out.println("Transaksi ID: " + transaksi.id + ", Customer: " + transaksi.akun.username);
