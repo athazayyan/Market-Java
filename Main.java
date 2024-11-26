@@ -19,9 +19,9 @@ public class Main {
                 int price = data.length > 3 ? Integer.parseInt(data[3]) : 0; // Harga barang
                 listBarang.add(new Barang(id, name, quantity, price)); // Menambahkan barang ke daftar
             }
-            System.out.println("Barang data loaded from allBarang.txt");
+            System.out.println("Data barang dimuat dari allBarang.txt");
         } catch (IOException e) {
-            System.err.println("Error reading file: " + e.getMessage()); // Menampilkan pesan kesalahan jika terjadi kesalahan saat membaca file
+            System.err.println("Kesalahan membaca file: " + e.getMessage()); // Menampilkan pesan kesalahan jika terjadi kesalahan saat membaca file
         }
     }
 
@@ -37,211 +37,205 @@ public class Main {
                     userDatabase.put(id, username + ":" + password); // Menyimpan data ke dalam userDatabase
                 }
             }
-            System.out.println("User database loaded from userDatabase.txt");
+            System.out.println("Database pengguna dimuat dari userDatabase.txt");
         } catch (IOException e) {
-            System.err.println("Error loading user database: " + e.getMessage());
+            System.err.println("Kesalahan memuat database pengguna: " + e.getMessage());
         }
     }
 
     // Metode untuk login pengguna
     public void login() {
         try (Scanner scanner = new Scanner(System.in)) {
-        System.out.print("Enter ID: ");
-        String id = scanner.nextLine();
-    
-        // Memeriksa apakah ID untuk Admin (A1)
-        if (id.equals("A1")) {
-            System.out.print("Enter Admin Password: ");
-            String password = scanner.nextLine();
-    
-            // Memeriksa password untuk Admin
-            if (password.equals("#Admin123")) {
-                Akun akun = new Admin(id); // Membuat objek Admin
-                AdminDriver driverAkun = new AdminDriver(akun, listBarang, listTransaksi); // Membuat driver untuk admin
-                // saveLoginDetails(id); // Menyimpan detail login (jika diperlukan)
-                System.out.println("Logged in as Admin");
-                adminMenu(driverAkun);
-            } // Menampilkan menu admin
-             else {
-                    System.out.println("Invalid Admin Password");
-                }
-            }
-         else if (userDatabase.containsKey(id)) {
-                System.out.print("Enter password: ");
+            System.out.print("Masukkan ID: ");
+            String id = scanner.nextLine();
+
+            // Memeriksa apakah ID untuk Admin (A1)
+            if (id.equals("A1")) {
+                System.out.print("Masukkan Password Admin: ");
                 String password = scanner.nextLine();
-        
+
+                // Memeriksa password untuk Admin
+                if (password.equals("#Admin123")) {
+                    Akun akun = new Admin(id); // Membuat objek Admin
+                    AdminDriver driverAkun = new AdminDriver(akun, listBarang, listTransaksi); // Membuat driver untuk admin
+                    // saveLoginDetails(id); // Menyimpan detail login (jika diperlukan)
+                    System.out.println("Masuk sebagai Admin");
+                    adminMenu(driverAkun); // Menampilkan menu admin
+                } else {
+                    System.out.println("Password Admin tidak valid");
+                }
+            } else if (userDatabase.containsKey(id)) {
+                System.out.print("Masukkan password: ");
+                String password = scanner.nextLine();
+
                 // Memeriksa password sesuai dengan yang tersimpan dalam userDatabase
                 String[] userDetails = userDatabase.get(id).split(":");
                 String correctUsername = userDetails[0];
                 String correctPassword = userDetails[1];
-        
+
                 if (password.equals(correctPassword)) {
                     // Membuat objek Customer dengan username dan password yang sesuai
                     Akun akun = new Customer(id, correctUsername, correctPassword);
                     CustomerDriver driverAkun = new CustomerDriver((Customer) akun, new ArrayList<>(), listBarang, listTransaksi);
-                    System.out.println("Logged in as Customer: " + correctUsername);
-                // saveLoginDetails(id); // Menyimpan detail login (jika diperlukan)
+                    System.out.println("Masuk sebagai Customer: " + correctUsername);
+                    // saveLoginDetails(id); // Menyimpan detail login (jika diperlukan)
 
                     customerMenu(driverAkun); // Menampilkan menu customer
                 } else {
-                    System.out.println("Invalid Password for Customer");
+                    System.out.println("Password untuk Customer tidak valid");
+                    login();
                 }
             } else {
-                System.out.println("Login failed: Invalid ID");
+                System.out.println("Gagal masuk: ID tidak valid");
                 login();
             }
         } catch (Exception e) {
-            System.err.println("Error during login: " + e.getMessage());
+            System.err.println("Kesalahan selama login: " + e.getMessage());
         }
     }
-        
 
     public void register() {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter username: ");
+        System.out.print("Masukkan username: ");
         String username = scanner.nextLine();
-    
+
         // Validasi username
         if (userDatabase.values().stream().anyMatch(data -> data.split(":")[0].equals(username))) {
-            System.out.println("Username already exists. Please choose a different one.");
+            System.out.println("Username sudah ada. Silakan pilih yang lain.");
             return;
         }
-    
-        System.out.print("Enter password: ");
+
+        System.out.print("Masukkan password: ");
         String password = scanner.nextLine();
-    
+
         if (username.equalsIgnoreCase("Admin")) {
-            System.out.println("Cannot register as Admin. Only one Admin allowed.");
+            System.out.println("Tidak dapat mendaftar sebagai Admin. Hanya satu Admin yang diizinkan.");
             return;
         }
-    
+
         String id = "C" + (userDatabase.size() + 1);
         userDatabase.put(id, username + ":" + password);
-    
+
         // Simpan ke file
         try (FileWriter writer = new FileWriter("userDatabase.txt", true)) {
             writer.write(id + ":" + username + ":" + password + "\n");
         } catch (IOException e) {
-            System.err.println("Error saving user: " + e.getMessage());
+            System.err.println("Kesalahan menyimpan pengguna: " + e.getMessage());
         }
-    
-        System.out.println("Registered successfully with ID: " + id);
+
+        System.out.println("Berhasil mendaftar dengan ID: " + id);
     }
-    
-    
+
     // Metode untuk menampilkan menu admin
     public void adminMenu(AdminDriver adminDriver) {
         try (Scanner scanner = new Scanner(System.in)) {
             while (true) {
-                System.out.println("Admin Menu:");
-                System.out.println("1. Add Barang");
+                System.out.println("Menu Admin:");
+                System.out.println("1. Tambah Barang");
                 System.out.println("2. Edit Barang");
-                System.out.println("3. Delete Barang");
-                System.out.println("4. View Transaksi");
-                System.out.println("5. Accept Transaksi");
+                System.out.println("3. Hapus Barang");
+                System.out.println("4. Lihat Transaksi");
+                System.out.println("5. Terima Transaksi");
                 System.out.println("6. Lihat Ketersediaan Stok");
                 System.out.println("7. Logout");
-                System.out.print("Choose an option: ");
+                System.out.print("Pilih opsi: ");
                 int choice = scanner.nextInt();
                 scanner.nextLine();
 
+                switch (choice) {
+                    case 1 -> {
+                        System.out.print("Masukkan ID Barang: ");
+                        String id = scanner.nextLine();
+                        System.out.print("Masukkan nama Barang: ");
+                        String name = scanner.nextLine();
+                        System.out.print("Masukkan kuantitas Barang: ");
+                        int quantity = scanner.nextInt();
+                        scanner.nextLine();
+                        System.out.print("Masukkan harga Barang: ");
+                        int price = scanner.nextInt();
+                        scanner.nextLine();
+                        // Menambahkan barang baru menggunakan metode dari AdminDriver
+                        adminDriver.addBarang(new Barang(id, name, quantity, price));
+                    }
+                    case 2 -> {
+                        System.out.print("Masukkan indeks untuk diedit: ");
+                        int editIndex = scanner.nextInt();
+                        scanner.nextLine();
+                        System.out.print("Masukkan ID Barang baru: ");
+                        String newId = scanner.nextLine();
+                        System.out.print("Masukkan nama Barang baru: ");
+                        String newName = scanner.nextLine();
+                        System.out.print("Masukkan kuantitas Barang baru: ");
+                        int newQuantity = scanner.nextInt();
+                        scanner.nextLine();
+                        System.out.print("Masukkan harga Barang baru: ");
+                        int newPrice = scanner.nextInt();
+                        scanner.nextLine();
+                        // Mengedit barang yang ada menggunakan metode dari AdminDriver
+                        adminDriver.editBarang(editIndex, new Barang(newId, newName, newQuantity, newPrice));
+                    }
+                    case 3 -> {
+                        System.out.print("Masukkan indeks untuk dihapus: ");
+                        int deleteIndex = scanner.nextInt();
+                        scanner.nextLine();
+                        // Menghapus barang menggunakan metode dari AdminDriver
+                        adminDriver.deleteBarang(deleteIndex);
+                    }
+                    case 4 -> adminDriver.viewTransaksi(); // Menampilkan daftar transaksi menggunakan metode dari AdminDriver
+                    case 5 -> {
+                        System.out.print("Masukkan indeks transaksi untuk diterima: ");
+                        int transIndex = scanner.nextInt();
+                        scanner.nextLine();
+                        // Menerima transaksi menggunakan metode dari AdminDriver
+                        adminDriver.acceptTransaksi(transIndex);
+                    }
+                    case 6 -> adminDriver.viewBarang();
+                    case 7 -> {
+                        return;
+                    }
+                    default -> {
+                        System.out.println("Opsi tidak valid");
+                        return;
+                    } // Menampilkan pesan jika opsi tidak valid
+                }
+            }
+        }
+    }
+
+    public void customerMenu(CustomerDriver customerDriver) {
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            System.out.println("Menu Customer:");
+            System.out.println("1. Lihat Barang");
+            System.out.println("2. Tambah Barang ke Keranjang");
+            System.out.println("3. Checkout");
+            System.out.println("4. Lihat Riwayat");
+            System.out.println("5. Logout");
+            System.out.print("Pilih opsi: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
             switch (choice) {
-                case 1 -> {
-                    System.out.print("Enter Barang ID: ");
-                    String id = scanner.nextLine();
-                    System.out.print("Enter Barang name: ");
-                    String name = scanner.nextLine();
-                    System.out.print("Enter Barang quantity: ");
+                case 1 -> customerDriver.viewBarang();
+                case 2 -> {
+                    customerDriver.viewBarang();
+                    System.out.print("Masukkan ID Barang untuk ditambahkan ke keranjang: ");
+                    String barangId = scanner.nextLine();
+                    System.out.print("Masukkan kuantitas: ");
                     int quantity = scanner.nextInt();
                     scanner.nextLine();
-                    System.out.print("Masukkan harga barang: ");
-                    int price = scanner.nextInt();
-                    scanner.nextLine();
-                    // Menambahkan barang baru menggunakan metode dari AdminDriver
-                    adminDriver.addBarang(new Barang(id, name, quantity, price));
+                    customerDriver.addBarangToCart(barangId, quantity);
                 }
-                case 2 -> {
-                    System.out.print("Enter index to edit: ");
-                    int editIndex = scanner.nextInt();
-                    scanner.nextLine();
-                    System.out.print("Enter new Barang ID: ");
-                    String newId = scanner.nextLine();
-                    System.out.print("Enter new Barang name: ");
-                    String newName = scanner.nextLine();
-                    System.out.print("Enter new Barang quantity: ");
-                    int newQuantity = scanner.nextInt();
-                    scanner.nextLine();
-                    System.out.print("Masukkan harga barang Baru: ");
-                    int newPrice = scanner.nextInt();
-                    scanner.nextLine();
-                    // Mengedit barang yang ada menggunakan metode dari AdminDriver
-                    adminDriver.editBarang(editIndex, new Barang(newId, newName, newQuantity, newPrice));
-                }
-                case 3 -> {
-                    System.out.print("Enter index to delete: ");
-                    int deleteIndex = scanner.nextInt();
-                    scanner.nextLine();
-                    // Menghapus barang menggunakan metode dari AdminDriver
-                    adminDriver.deleteBarang(deleteIndex);
-                }
-                case 4 -> adminDriver.viewTransaksi(); // Menampilkan daftar transaksi menggunakan metode dari AdminDriver
+                case 3 -> customerDriver.checkout();
+                case 4 -> customerDriver.viewHistory();
                 case 5 -> {
-                    System.out.print("Enter index of transaksi to accept: ");
-                    int transIndex = scanner.nextInt();
-                    scanner.nextLine();
-                    // Menerima transaksi menggunakan metode dari AdminDriver
-                    adminDriver.acceptTransaksi(transIndex);
+                    System.out.println("Keluar...");
+                    return;
                 }
-                case 6 -> adminDriver.viewBarang();
-                case 7 -> {
-                    login();                }
-                default -> {
-
-                System.out.println("Invalid option");
-                login();} // Menampilkan pesan jika opsi tidak valid
+                default -> System.out.println("Opsi tidak valid. Silakan coba lagi.");
             }
         }
     }
-}
-
-
-public void customerMenu(CustomerDriver customerDriver) {
-    Scanner scanner = new Scanner(System.in);
-    while (true) {
-        System.out.println("Customer Menu:");
-        System.out.println("1. View Barang");
-        System.out.println("2. Add Barang to Cart");
-        System.out.println("3. Checkout");
-        System.out.println("4. View History");
-        System.out.println("5. Logout");
-        System.out.print("Choose an option: ");
-        int choice = scanner.nextInt();
-        scanner.nextLine();
-
-        switch (choice) {
-            case 1 -> customerDriver.viewBarang();
-            case 2 -> {
-                customerDriver.viewBarang();
-                System.out.print("Enter Barang ID to add to cart: ");
-                String barangId = scanner.nextLine();
-                System.out.print("Enter quantity: ");
-                int quantity = scanner.nextInt();
-                scanner.nextLine();
-                customerDriver.addBarangToCart(barangId, quantity);
-            }
-            case 3 -> customerDriver.checkout();
-            case 4 -> customerDriver.viewHistory();
-            case 5 -> {
-                System.out.println("Logging out...");
-                login();
-            }
-            default -> System.out.println("Invalid option. Please try again.");
-        }
-    }
-}
-
-    
-    
 
     // Metode utama untuk menjalankan aplikasi
     public static void main(String[] args) {
@@ -249,26 +243,24 @@ public void customerMenu(CustomerDriver customerDriver) {
         main.loadBarangData(); // Memuat data barang dari file
         main.loadUserDatabase(); // Memuat data pengguna dari file
         Scanner scanner = new Scanner(System.in);
-    
+
         while (true) {
-            System.out.println("1. Register");
-            System.out.println("2. Login");
-            System.out.println("3. Exit");
-            System.out.print("Choose an option: ");
+            System.out.println("1. Daftar");
+            System.out.println("2. Masuk");
+            System.out.println("3. Keluar");
+            System.out.print("Pilih opsi: ");
             int choice = scanner.nextInt();
             scanner.nextLine();
-    
+
             switch (choice) {
                 case 1 -> main.register(); // Memanggil metode pendaftaran
                 case 2 -> main.login();    // Memanggil metode login
                 case 3 -> {
-                    System.out.println("Exiting program...");
+                    System.out.println("Keluar dari program...");
                     return; // Menghentikan program
                 }
-                default -> System.out.println("Invalid option. Please try again.");
+                default -> System.out.println("Opsi tidak valid. Silakan coba lagi.");
             }
         }
     }
-    
-    
 }
