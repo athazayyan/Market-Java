@@ -15,14 +15,14 @@ Fungsi Pelanggan:
 
 Fungsi Admin:
 
-   Manajemen Inventaris:
-        Menambahkan, mengedit, atau menghapus produk dalam inventaris.
-        Menyimpan detail produk ke file (allBarang.txt).
-    Manajemen Transaksi:
-        Melihat file checkout pelanggan dan detailnya.
-        Menerima transaksi dan memperbarui tingkat stok secara otomatis.
-        Menghapus file transaksi kosong setelah diproses.
-    Melihat Ketersediaan Stok: Melihat ketersediaan stok dengan cepat.
+       Manajemen Inventaris:
+            Menambahkan, mengedit, atau menghapus produk dalam inventaris.
+            Menyimpan detail produk ke file (allBarang.txt).
+        Manajemen Transaksi:
+            Melihat file checkout pelanggan dan detailnya.
+            Menerima transaksi dan memperbarui tingkat stok secara otomatis.
+            Menghapus file transaksi kosong setelah diproses.
+        Melihat Ketersediaan Stok: Melihat ketersediaan stok dengan cepat.
 
   Cara Mengakses Proyek dari GitHub
 
