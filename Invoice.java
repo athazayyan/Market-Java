@@ -17,6 +17,6 @@ public class Invoice {
         for (Barang barang : transaksi.barang) {
             System.out.println(" - " + barang.name + " (x" + barang.quantity + ")");
         }
-        pembayaran.bayar();
+        
     }
 }

@@ -1,4 +1,3 @@
-import java.awt.image.IndexColorModel;
 import java.io.*;
 import java.util.*;
 
@@ -123,6 +122,7 @@ public class CustomerDriver extends Driver {
                                 pembayaran = new Bank();
                                 pembayaran.bayar();
                                 break;
+                                
                             case 2:
                                 pembayaran = new COD();
                                 pembayaran.bayar();
@@ -182,10 +182,34 @@ public class CustomerDriver extends Driver {
 
     // Menampilkan riwayat transaksi new ArrayList<>(this.cart)
     public void viewHistory() {
-        System.out.println("Melihat Riwayat: " + this.akun.id + " " + this.akun.username);
-        for (Transaksi transaksi : listTransaksi) {
-            System.out.println("Transaksi ID: " + transaksi.id + ", Customer: " + transaksi.akun.username);
+        System.out.println("Melihat Riwayat Transaksi... anda"+ akun.id+" "+ akun.username);
+        System.out.print("Mau lihat yang lagi di proses atau yang sudah selesai? (1 lagi diproses/2 yang sudah selesai): ");
+        Scanner scanner = new Scanner(System.in);
+        int choice = scanner.nextInt();
+        scanner.nextLine();
+        if (choice == 1) {
+            try (BufferedReader reader = new BufferedReader(new FileReader("Checkout" + akun.id + ".txt"))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    System.out.println(line);
+                }
+            } catch (IOException e) {
+                System.out.println("Gagal membaca file checkout: atau belum ada transaksi nih" + e.getMessage());
+            }
+        } else if (choice == 2) {
+            try (BufferedReader reader = new BufferedReader(new FileReader("acceptedTransactions.txt"))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    String[] data = line.split(",");
+                    if (data[0].equals(akun.id)) {
+                        System.out.println(line);
+                    }
+                }
+            } catch (IOException e) {
+                System.out.println("Gagal membaca file acceptedTransactions: " + e.getMessage());
+            }
         }
+
     }
 
     // Metode untuk menampilkan menu pelanggan

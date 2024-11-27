@@ -1,6 +1,6 @@
+import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -104,6 +104,7 @@ public void acceptTransaksi() {
         Path dir = Paths.get(".");
         DirectoryStream<Path> stream = Files.newDirectoryStream(dir, "CheckoutC*.txt");
         List<Path> files = new ArrayList<>();
+        List<String> acceptedTransactions = new ArrayList<>();
 
         System.out.println("Daftar file Checkout:");
         int index = 0;
@@ -130,16 +131,25 @@ public void acceptTransaksi() {
 
                     // Memilih transaksi untuk diterima
                     System.out.print("Masukkan indeks transaksi untuk diterima: ");
-                    int transIndex = Integer.parseInt(scanner.nextLine());
+                    String aa = scanner.nextLine();
+                    int transIndex = Integer.parseInt(aa);
+                 
 
                     // Validasi indeks transaksi
                     if (transIndex >= 0 && transIndex < lines.size()) {
                         String acceptedTransaction = lines.get(transIndex);
                         System.out.println("Transaksi diterima: " + acceptedTransaction);
 
+                        // Mendapatkan ID pelanggan dari nama file
+                        String customerId = extractCustomerId(selectedFile.getFileName().toString());
+
                         // Memproses transaksi dan memperbarui stok
                         Transaksi transaksi = parseTransaction(acceptedTransaction);
                         updateStockAfterTransaksiAcceptance(transaksi);
+
+                        // Tambahkan transaksi ke daftar transaksi yang diterima dengan Customer ID
+                        String formattedTransaction = customerId + "," + acceptedTransaction;
+                        acceptedTransactions.add(formattedTransaction);
 
                         // Menghapus transaksi yang diterima
                         lines.remove(transIndex);
@@ -164,12 +174,36 @@ public void acceptTransaksi() {
         } else {
             System.out.println("Tidak ada file Checkout yang ditemukan.");
         }
+
+        // Menyimpan semua transaksi yang diterima ke file acceptedTransactions.txt
+        if (!acceptedTransactions.isEmpty()) {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter("acceptedTransactions.txt", true))) {
+                for (String transaction : acceptedTransactions) {
+                    writer.write(transaction);
+                    writer.newLine();
+                }
+            }
+            System.out.println("Semua transaksi yang diterima telah dicetak ke acceptedTransactions.txt");
+        } else {
+            System.out.println("Tidak ada transaksi yang diterima.");
+        }
     } catch (IOException e) {
         System.out.println("Terjadi kesalahan saat membaca atau menulis file: " + e.getMessage());
     } catch (NumberFormatException e) {
         System.out.println("Input tidak valid. Harap masukkan angka yang benar.");
     }
 }
+
+// Metode untuk mendapatkan ID pelanggan dari nama file
+private String extractCustomerId(String fileName) {
+    // Ekstrak ID pelanggan dari nama file dengan pola "CheckoutC*.txt"
+    if (fileName.startsWith("CheckoutC") && fileName.endsWith(".txt")) {
+        return fileName.substring(8, fileName.indexOf(".txt")); // Mulai dari indeks 8 untuk menyertakan huruf 'C'
+    }
+    return "defaultId"; // ID default jika nama file tidak sesuai pola
+}
+
+
 
     private void updateStockAfterTransaksiAcceptance(Transaksi transaksi) {
         for (Barang transBarang : transaksi.barang) {
@@ -296,6 +330,7 @@ public void acceptTransaksi() {
                         Menu();
                     case 5:
                         acceptTransaksi();
+                        Menu();
                         break;
                     case 6:
                         viewBarang();
