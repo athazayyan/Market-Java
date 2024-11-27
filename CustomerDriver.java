@@ -121,12 +121,15 @@ public class CustomerDriver extends Driver {
                         switch (paymentChoice) {
                             case 1:
                                 pembayaran = new Bank();
+                                pembayaran.bayar();
                                 break;
                             case 2:
                                 pembayaran = new COD();
+                                pembayaran.bayar();
                                 break;
                             case 3:
                                 pembayaran = new QRIS();
+                                pembayaran.bayar();
                                 break;
                             default:
                                 System.out.println("Pilihan metode pembayaran tidak valid. Checkout dibatalkan.");
