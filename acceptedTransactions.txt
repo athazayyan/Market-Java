@@ -1,0 +1,5 @@
+C3,1000,Rolex,1,9000000.0, Metode: QRIS
+C3,1000,Rolex,2,9000000.0, Metode: Bank
+C2,1005,Cartier,2,2.5E7, Metode: QRIS
+C2,1011,Patek Philippe,2,3.5E7, Metode: QRIS
+C1,1011,Patek Philippe,2,3.5E7, Metode: QRIS
