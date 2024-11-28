@@ -6,7 +6,11 @@ Kelompok 7
 
 Sistem Manajemen Platform E-Commerce
 
-Selamat datang di Sistem Manajemen Platform E-Commerce! Proyek ini adalah aplikasi berbasis Java yang dirancang untuk memfasilitasi operasi e-commerce bagi administrator dan pelanggan. Aplikasi ini menyediakan fitur untuk manajemen inventaris, pemrosesan pesanan, dan penanganan transaksi, menjadikannya solusi ideal untuk bisnis ritel online skala kecil.
+Selamat datang di Sistem Manajemen Platform E-Commerce! Proyek ini adalah aplikasi berbasis Java yang dirancang untuk memfasilitasi operasi e-commerce bagi administrator dan pelanggan. 
+
+
+
+Aplikasi ini menyediakan fitur untuk manajemen inventaris, pemrosesan pesanan, dan penanganan transaksi, menjadikannya solusi ideal untuk bisnis ritel online untuk barang barang mewah.
 
 Fitur
 Fungsi Pelanggan:
