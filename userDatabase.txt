@@ -1,2 +1,3 @@
-C1:haikal:1
-C2:aulia:2
+C1:Atha:123
+C2:Atha:12
+C3:Diqa:11
