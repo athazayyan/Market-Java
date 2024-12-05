@@ -247,8 +247,7 @@ public class AdminDriver extends Driver {
     public void Menu() {
         try (Scanner scanner = new Scanner(System.in)) {
             boolean stayInMenu = true;
-            clearScreen();
-
+           
             while (stayInMenu) {
                 System.out.println("\n\n==============Menu Admin:===================");
                 System.out.println("1. Tambah Barang");
